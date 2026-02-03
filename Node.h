@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include "Message.h"
+#include <map>
+#include <string>
 
 class Node
 {
@@ -11,13 +13,17 @@ public:
 
 	int getId() const { return id; }
 
-	void broadcastMsg(const Message& msg);
-	void recieveMsg(const Message& msg);
+	void broadcastMsg(Message msg);
+	void recieveMsg(Message msg);
 	void setOtherNodes(std::vector<Node*> nodes) { otherNodes = nodes; }
 
+	std::string calcMajority();
 private:
 	static int nextId;
 	const int id;
 	std::vector<Node*> otherNodes;
+	std::map<int, std::string> msgsRecieved;
+
+	
 };
 
