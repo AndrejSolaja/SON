@@ -1,11 +1,23 @@
 #include "Message.h"
+#include "CertificationBody.h"
+
+Message::Message(int nodeId, std::vector<uint8_t> privateKey, std::string payload) 
+    : senderId(nodeId), payload(std::move(payload)) {
+
+	this->history.push_back(nodeId);
+	// Sign
+    CertificationBody& cb = CertificationBody::getInstance();
+    auto signature = cb.signMsg(nodeId, privateKey, this->payload);
+    signatures.push_back(signature);
+    this->signedBy.insert(nodeId);
+}
 
 std::string Message::getPrintFormat()
 {
 	std::string result = "";
 
 	for (auto x : this->history) {
-		result += x;
+		result += std::to_string(x);
 		result += ".";
 	}
 
@@ -18,7 +30,32 @@ std::string Message::getPrintFormat()
 	return result;
 }
 
-void Message::addHistory(int id)
-{
-	this->history.push_back(std::to_string(id));
+
+Message Message::acceptAndSign(int nodeId, std::vector<uint8_t> privateKey, Message& incomingMsg) {
+    Message newMsg = Message(incomingMsg);
+
+    // Accept
+    newMsg.history.push_back(nodeId);
+    newMsg.senderId = nodeId;
+
+    // Sign
+    CertificationBody& cb = CertificationBody::getInstance();
+    auto signature = cb.signMsg(nodeId, privateKey, newMsg.payload);
+    newMsg.signatures.push_back(signature);
+    newMsg.signedBy.insert(nodeId);
+    
+    return newMsg;
+}
+
+bool Message::checkValidity() {
+	CertificationBody& cb = CertificationBody::getInstance();
+	
+	for(int i = this->signatures.size() - 1; i >= 0 ; i--) {
+		if(!cb.verifySignature(this->history[i],this->signatures[i],this->payload)){
+			return false;
+		}
+	}
+
+	return true;
+
 }

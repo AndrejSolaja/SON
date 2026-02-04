@@ -20,20 +20,24 @@ int Node::broadcastMsg(Message msg)
 
 }
 
-void Node::recieveMsg(Message msg)
+void Node::recieveMsg(Message incomingMsg)
 {
-	// Check validity , read
-	this->recievedValues.insert(msg.payload);
+	// TODO: Check validity
+	if(!incomingMsg.checkValidity()) {
+		std::cerr << "Invalid message" << std::endl;
+		return;
+	}
+	
+	// Read
+	this->recievedValues.insert(incomingMsg.payload);
 
-	// temp
-	msg.addHistory(this->getId());
+	// Accept and sign
+	Message newMsg = Message::acceptAndSign(this->getId(), this->getPrivateKey(), incomingMsg);
 
-	// Sign 
-	msg.signedBy.insert(this->getId());
-	std::cout << msg.getPrintFormat() << std::endl;
+	std::cout << newMsg.getPrintFormat() << std::endl;
 
 	// Forward
-	if (broadcastMsg(msg) == 0) {
+	if (broadcastMsg(newMsg) == 0) {
 		// No one to send anymore, do choice
 		std::cout << "Choice(" << this->getId() << ") = " << choice() << std::endl;
 	}

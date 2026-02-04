@@ -12,18 +12,22 @@ class Node
 public:
 	Node() : id(++nextId) {};
 
-	int getId() const { return id; }
-
 	int broadcastMsg(Message msg);
 	void recieveMsg(Message msg);
+	std::string choice();
+
+	int getId() const { return id; }
 	void setOtherNodes(std::vector<Node*> nodes) { otherNodes = nodes; }
 
-	std::string choice();
+	std::vector<uint8_t> getPrivateKey() const {return privateKey; }
+	void setPrivateKey(std::vector<uint8_t> pk) { privateKey = pk;}
+
 private:
 	static int nextId;
 	const int id;
-	std::vector<Node*> otherNodes;
+	std::vector<uint8_t> privateKey;
 
+	std::vector<Node*> otherNodes;
 	std::set<std::string> recievedValues;
 
 	

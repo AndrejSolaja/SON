@@ -17,7 +17,7 @@ void Simulation::init()
 	// Register to certification body and get private key
 	for(int i = 0 ; i < totalNumNodes; i++) {
 		std::vector<uint8_t> privateKey = cb.registerNode(nodes[i]->getId());
-		
+		nodes[i]->setPrivateKey(privateKey);
 	}
 
 	// Add references 
@@ -32,7 +32,6 @@ void Simulation::init()
 		nodes[i]->setOtherNodes(tempNodes);
 	}
 
-	
 }
 
 void Simulation::start()
@@ -44,10 +43,12 @@ void Simulation::start()
 
 
 	// Create message from source and send to all other nodes
-	Message m(sourceNode->getId(), "test");
-	m.signedBy.insert(sourceNode->getId());
-	m.addHistory(sourceNode->getId());
-	sourceNode->broadcastMsg(m);
+	Message msg(sourceNode->getId(),sourceNode->getPrivateKey(), "test");
+	sourceNode->broadcastMsg(msg);
+
+
+
+
 
 
 }

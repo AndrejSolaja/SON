@@ -5,9 +5,19 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include "CertificationBody.h"
 
 int main()
 {
+    //CertificationBody& cb = CertificationBody::getInstance();
+
+    //auto privateKey = cb.registerNode(66);
+    //// auto publicKey = cb.getPublicKey(66);
+
+    //auto signature = cb.signMsg(66, privateKey, "test");
+    //std::cout << cb.verifySignature(66, signature, "test");
+
+
     // Hardcoded atm, read from arguments later
     int N = 3;
     int m = 0;
@@ -18,7 +28,8 @@ int main()
     simulation.init();
     simulation.start();
 
-    
+
+
 
 }
 
