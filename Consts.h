@@ -1,3 +1,5 @@
 #pragma once
 
-#define DEFAULT_VALUE "default"
+#define DEFAULT_MESSAGE_TEXT "DEFAULT"
+#define MESSAGE_TEXT "ATTACK"
+#define TRAITOR_MESSAGE_TEXT "RETREAT"

@@ -4,13 +4,14 @@
 #include <memory>
 #include <iostream>
 #include "CertificationBody.h"
+#include "Consts.h"
 
 void Simulation::init()
 {
 	// Create nodes
 	nodes.reserve(totalNumNodes);
 	for (int i = 0; i < totalNumNodes; i++) {
-		nodes.push_back(std::make_unique<Node>());
+		nodes.push_back(std::make_unique<Node>(this->numFaultyNodes));
 	}
     
 	CertificationBody& cb = CertificationBody::getInstance();
@@ -36,19 +37,26 @@ void Simulation::init()
 
 void Simulation::start()
 {
-	// Choose one node to be source
-	// For now hardcode to be first node 
+	std::cout << "N = " << this->totalNumNodes << " | m = " << this->numFaultyNodes << std::endl;
+
+	// Choose first node to be general
 	Node* sourceNode = nodes[0].get();
-	std::cout << "Source node: " << sourceNode->getId() << std::endl;
+	std::cout << "General: " << sourceNode->getId() << std::endl;
+	std::cout << "Message: " << MESSAGE_TEXT << std::endl;
+	std::cout << "Default message: " << DEFAULT_MESSAGE_TEXT << std::endl;
 
 
 	// Create message from source and send to all other nodes
 	Message msg(sourceNode->getId(),sourceNode->getPrivateKey(), "test");
 	sourceNode->broadcastMsg(msg);
 
+}
 
-
-
+void Simulation::end() {
+	// Should trigger when no more messages can arrive 
+	for (int i = 0; i < totalNumNodes; i++) {
+		std::cout << "Choice(" << nodes[i]->getId() << ") = " << nodes[i]->choice() << std::endl;
+	}
 
 
 }

@@ -9,24 +9,18 @@
 
 int main()
 {
-    //CertificationBody& cb = CertificationBody::getInstance();
-
-    //auto privateKey = cb.registerNode(66);
-    //// auto publicKey = cb.getPublicKey(66);
-
-    //auto signature = cb.signMsg(66, privateKey, "test");
-    //std::cout << cb.verifySignature(66, signature, "test");
-
 
     // Hardcoded atm, read from arguments later
-    int N = 3;
-    int m = 0;
+    int N = 4;
+    int m = 1;
+    bool isGeneralLoyal = true;
 
     // Main simulation
-    Simulation simulation(N, m);
+    Simulation simulation(N, m, isGeneralLoyal);
 
     simulation.init();
     simulation.start();
+    simulation.end();
 
 
 

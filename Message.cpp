@@ -12,6 +12,14 @@ Message::Message(int nodeId, std::vector<uint8_t> privateKey, std::string payloa
     this->signedBy.insert(nodeId);
 }
 
+Message::Message(const Message& other)
+    : senderId(other.senderId),
+      payload(other.payload),
+      signedBy(other.signedBy),
+      history(other.history),
+      signatures(other.signatures) {
+}
+
 std::string Message::getPrintFormat()
 {
 	std::string result = "";

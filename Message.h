@@ -14,6 +14,7 @@ public:
     std::vector<std::vector<uint8_t>> signatures;
 
     Message(int nodeId, std::vector<uint8_t> privateKey, std::string payload);
+    Message(const Message& other);
 
     std::string getPrintFormat();
 

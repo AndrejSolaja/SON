@@ -10,7 +10,7 @@
 class Node
 {
 public:
-	Node() : id(++nextId) {};
+	Node(int numFaultyNodes, bool isLoyal = true) : id(++nextId), numFaultyNodes(numFaultyNodes), isLoyal(isLoyal) {};
 
 	int broadcastMsg(Message msg);
 	void recieveMsg(Message msg);
@@ -26,10 +26,13 @@ private:
 	static int nextId;
 	const int id;
 	std::vector<uint8_t> privateKey;
+	int numFaultyNodes;
+	bool isLoyal;
 
 	std::vector<Node*> otherNodes;
 	std::set<std::string> recievedValues;
 
+	
 	
 };
 

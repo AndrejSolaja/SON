@@ -25,7 +25,6 @@ void Node::recieveMsg(Message incomingMsg)
 	// TODO: Check validity
 	if(!incomingMsg.checkValidity()) {
 		std::cerr << "Invalid message" << std::endl;
-		return;
 	}
 	
 	// Read
@@ -36,18 +35,24 @@ void Node::recieveMsg(Message incomingMsg)
 
 	std::cout << newMsg.getPrintFormat() << std::endl;
 
-	// Forward
-	if (broadcastMsg(newMsg) == 0) {
-		// No one to send anymore, do choice
-		std::cout << "Choice(" << this->getId() << ") = " << choice() << std::endl;
+	// Check if round limit is reached before forwarding
+	if (newMsg.history.size() <= this->numFaultyNodes + 1) {
+		// Forward
+		broadcastMsg(newMsg);
 	}
+
 
 }
 
 
 std::string Node::choice()
 {
+	// If no values received, return default
+	if (this->recievedValues.empty()) return DEFAULT_MESSAGE_TEXT;
+	
 	// If there are multiple values return default value
-	if (this->recievedValues.size() > 1) return DEFAULT_VALUE;
+	if (this->recievedValues.size() > 1) return DEFAULT_MESSAGE_TEXT;
+	
+	// Single value received
 	return *this->recievedValues.begin();
 }
