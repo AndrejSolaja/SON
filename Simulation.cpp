@@ -3,7 +3,7 @@
 #include "Message.h"
 #include <memory>
 #include <iostream>
-
+#include "CertificationBody.h"
 
 void Simulation::init()
 {
@@ -13,6 +13,13 @@ void Simulation::init()
 		nodes.push_back(std::make_unique<Node>());
 	}
     
+	CertificationBody& cb = CertificationBody::getInstance();
+	// Register to certification body and get private key
+	for(int i = 0 ; i < totalNumNodes; i++) {
+		std::vector<uint8_t> privateKey = cb.registerNode(nodes[i]->getId());
+		
+	}
+
 	// Add references 
 	for (int i = 0; i < totalNumNodes; i++) {
 		std::vector<Node*> tempNodes = std::vector<Node*>();
@@ -24,6 +31,8 @@ void Simulation::init()
 		}
 		nodes[i]->setOtherNodes(tempNodes);
 	}
+
+	
 }
 
 void Simulation::start()
@@ -36,11 +45,9 @@ void Simulation::start()
 
 	// Create message from source and send to all other nodes
 	Message m(sourceNode->getId(), "test");
+	m.signedBy.insert(sourceNode->getId());
 	m.addHistory(sourceNode->getId());
 	sourceNode->broadcastMsg(m);
 
-	// Check majorities for every node
-	for (const auto& nodePtr : nodes) {
-		nodePtr.get()->calcMajority();
-	}
+
 }

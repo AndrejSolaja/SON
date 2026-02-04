@@ -5,6 +5,7 @@
 #include "Message.h"
 #include <map>
 #include <string>
+#include <set>
 
 class Node
 {
@@ -13,16 +14,17 @@ public:
 
 	int getId() const { return id; }
 
-	void broadcastMsg(Message msg);
+	int broadcastMsg(Message msg);
 	void recieveMsg(Message msg);
 	void setOtherNodes(std::vector<Node*> nodes) { otherNodes = nodes; }
 
-	std::string calcMajority();
+	std::string choice();
 private:
 	static int nextId;
 	const int id;
 	std::vector<Node*> otherNodes;
-	std::map<int, std::string> msgsRecieved;
+
+	std::set<std::string> recievedValues;
 
 	
 };

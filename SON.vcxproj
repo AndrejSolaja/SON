@@ -123,12 +123,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CertificationBody.cpp" />
     <ClCompile Include="Message.cpp" />
+    <ClCompile Include="micro-ecc\uECC.c" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="SON.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CertificationBody.h" />
+    <ClInclude Include="Consts.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Simulation.h" />

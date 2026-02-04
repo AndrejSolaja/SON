@@ -1,7 +1,10 @@
+﻿
 
-#include <iostream>
 #include "Simulation.h"
-
+#include "micro-ecc/uECC.h"
+#include <iostream>
+#include <vector>
+#include <cstring>
 
 int main()
 {
@@ -15,7 +18,7 @@ int main()
     simulation.init();
     simulation.start();
 
-
     
+
 }
 
