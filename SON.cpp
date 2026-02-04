@@ -11,7 +11,7 @@ int main()
 {
 
     // Hardcoded atm, read from arguments later
-    int N = 4;
+    int N = 5;
     int m = 1;
     bool isGeneralLoyal = true;
 

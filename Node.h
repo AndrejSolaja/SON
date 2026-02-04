@@ -12,15 +12,19 @@ class Node
 public:
 	Node(int numFaultyNodes, bool isLoyal = true) : id(++nextId), numFaultyNodes(numFaultyNodes), isLoyal(isLoyal) {};
 
-	int broadcastMsg(Message msg);
+	void broadcastMsg(Message msg);
 	void recieveMsg(Message msg);
 	std::string choice();
 
 	int getId() const { return id; }
 	void setOtherNodes(std::vector<Node*> nodes) { otherNodes = nodes; }
 
-	std::vector<uint8_t> getPrivateKey() const {return privateKey; }
+	std::vector<uint8_t> getPrivateKey() const { return privateKey; }
 	void setPrivateKey(std::vector<uint8_t> pk) { privateKey = pk;}
+
+	bool getIsLoyal() const { return isLoyal; }
+	void setIsGeneral(bool val) { isGeneral = val; }
+	std::set<std::string> getRecievedValues() const { return recievedValues; }
 
 private:
 	static int nextId;
@@ -28,6 +32,7 @@ private:
 	std::vector<uint8_t> privateKey;
 	int numFaultyNodes;
 	bool isLoyal;
+	bool isGeneral = false;
 
 	std::vector<Node*> otherNodes;
 	std::set<std::string> recievedValues;

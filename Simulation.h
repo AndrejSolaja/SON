@@ -16,6 +16,7 @@ private:
 	int numFaultyNodes; // m
 	bool isGeneralLoyal;
 
+	Node* general;
 	std::vector<std::unique_ptr<Node>> nodes;
 };
 
