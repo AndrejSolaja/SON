@@ -4,10 +4,11 @@
 #include <string>
 
 void printHelp() {
-    std::cout << "Usage: SON.exe [N] [m] [isGeneralLoyal] [--slow]\n";
+    std::cout << "Usage: SON.exe [N] [m] [isGeneralLoyal] [--slow] [--restore <file>]\n";
     std::cout << "Options:\n";
     std::cout << "  --help, -h            Show this help message\n";
     std::cout << "  --slow                Enable 1 second delay between messages\n";
+    std::cout << "  --restore <file>      Restore simulation from checkpoint file\n";
     std::cout << "Arguments:\n";
     std::cout << "  N                     Number of nodes (default: 3)\n";
     std::cout << "  m                     Number of faulty nodes (default: 0)\n";
@@ -21,6 +22,7 @@ int main(int argc, char* argv[])
     bool isGeneralLoyal = true;
     bool showHelp = false;
     bool slowMode = false;
+    std::string restoreFile = "";
 
     std::vector<std::string> positionalArgs;
     for (int i = 1; i < argc; ++i) {
@@ -30,6 +32,14 @@ int main(int argc, char* argv[])
         }
         else if (arg == "--slow") {
             slowMode = true;
+        }
+        else if (arg == "--restore") {
+            if (i + 1 < argc) {
+                restoreFile = argv[++i];
+            } else {
+                std::cerr << "Error: --restore requires a file path argument\n";
+                return 1;
+            }
         }
         else if (!arg.empty() && arg[0] == '-') {
             // Unknown option, ignore for now
@@ -69,8 +79,17 @@ int main(int argc, char* argv[])
     // Main simulation
     Simulation simulation(N, m, isGeneralLoyal);
     simulation.setSlowMode(slowMode);
-    simulation.init();
-    simulation.start();
+    
+    if (restoreFile != "") {
+        // Restore from checkpoint
+        simulation.loadCheckpoint(restoreFile);
+        simulation.start(true);
+    } else {
+        // Normal run
+        simulation.init();
+        simulation.start(false);
+    }
+    
     simulation.end();
 }
 

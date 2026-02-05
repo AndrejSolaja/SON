@@ -74,3 +74,15 @@ bool CertificationBody::verifySignature(int nodeId, std::vector<uint8_t> signatu
 void CertificationBody::reset() {
     publicKeys.clear();
 }
+
+void CertificationBody::registerNodeWithKeys(int nodeId, const std::vector<uint8_t>& publicKey) {
+    /*
+    Register a node with existing public key (for checkpoint restore)
+    */
+    if (publicKeys.count(nodeId) > 0) {
+        std::cerr << "Node: " << nodeId << " has already been registered" << std::endl;
+        return;
+    }
+    
+    this->publicKeys[nodeId] = publicKey;
+}

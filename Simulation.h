@@ -21,7 +21,7 @@ class Simulation
 public:
 	Simulation(int N, int m, bool isGeneralLoyal);
 	void init();
-	void start();
+	void start(bool isRestore);
 	void end();
 	
 	// Message queue operations
@@ -51,6 +51,7 @@ private:
 	int totalNumNodes; // N
 	int numFaultyNodes; // m
 	bool isGeneralLoyal;
+	int currentRound = 0;
 
 	int generalId = -1;
 	Node* general;
