@@ -70,3 +70,7 @@ bool CertificationBody::verifySignature(int nodeId, std::vector<uint8_t> signatu
         return false;
     }
 }
+
+void CertificationBody::reset() {
+    publicKeys.clear();
+}

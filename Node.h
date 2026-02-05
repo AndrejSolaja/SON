@@ -7,15 +7,16 @@
 #include <string>
 #include <set>
 #include <memory>
-#include <atomic>
 
 #include "spdlog/spdlog.h"
 
+// Forward declaration
+class Simulation;
 
 class Node
 {
 public:
-	Node(int numFaultyNodes, bool isLoyal = true);
+	Node(bool isLoyal = true);
 
 	void broadcastMsg(Message msg);
 	void recieveMsg(Message msg);
@@ -30,23 +31,28 @@ public:
 	bool getIsLoyal() const { return isLoyal; }
 	void setIsGeneral(bool val) { isGeneral = val; }
 	std::set<std::string> getRecievedValues() const { return recievedValues; }
+	void addReceivedValue(const std::string& val) { recievedValues.insert(val); }
+	
+	// Simulation reference for message queue
+	void setSimulation(Simulation* sim) { simulation = sim; }
 
 	// Logger access
 	std::shared_ptr<spdlog::logger> getLogger() { return nodeLogger; }
+	
+	// Reset static ID counter (for checkpoint restore)
+	static void resetIdCounter() { nextId = 0; }
 
 private:
 	static int nextId;
 	const int id;
 	std::vector<uint8_t> privateKey;
-	int numFaultyNodes;
 	bool isLoyal;
 	bool isGeneral = false;
 
 	std::vector<Node*> otherNodes;
 	std::set<std::string> recievedValues;
+	Simulation* simulation = nullptr;
 
 	std::shared_ptr<spdlog::logger> nodeLogger;
 };
-
-extern std::atomic<bool> g_slowMode;
 

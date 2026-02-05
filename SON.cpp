@@ -2,9 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <atomic>
-
-extern std::atomic<bool> g_slowMode;
 
 void printHelp() {
     std::cout << "Usage: SON.exe [N] [m] [isGeneralLoyal] [--slow]\n";
@@ -19,10 +16,11 @@ void printHelp() {
 
 int main(int argc, char* argv[])
 {
-    int N = 3;
-    int m = 0;
+    int N = 4;
+    int m = 1;
     bool isGeneralLoyal = true;
     bool showHelp = false;
+    bool slowMode = false;
 
     std::vector<std::string> positionalArgs;
     for (int i = 1; i < argc; ++i) {
@@ -31,7 +29,7 @@ int main(int argc, char* argv[])
             showHelp = true;
         }
         else if (arg == "--slow") {
-            g_slowMode = true;
+            slowMode = true;
         }
         else if (!arg.empty() && arg[0] == '-') {
             // Unknown option, ignore for now
@@ -70,6 +68,7 @@ int main(int argc, char* argv[])
 
     // Main simulation
     Simulation simulation(N, m, isGeneralLoyal);
+    simulation.setSlowMode(slowMode);
     simulation.init();
     simulation.start();
     simulation.end();

@@ -14,6 +14,9 @@ public:
     std::vector<uint8_t> getPublicKey(int nodeId);
     std::vector<uint8_t> signMsg(int nodeId, std::vector<uint8_t> privateKey, std::string msg);
     bool verifySignature(int nodeId, std::vector<uint8_t> signature, std::string msg);
+    
+    // Clear all registered nodes (for checkpoint restore)
+    void reset();
 
 private:
     CertificationBody();

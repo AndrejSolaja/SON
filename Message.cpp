@@ -67,3 +67,16 @@ bool Message::checkValidity() {
 	return true;
 
 }
+
+Message Message::createFromCheckpoint(int senderId, const std::string& payload, 
+                                       const std::vector<int>& history,
+                                       const std::set<int>& signedBy,
+                                       const std::vector<std::vector<uint8_t>>& signatures) {
+    Message msg;
+    msg.senderId = senderId;
+    msg.payload = payload;
+    msg.history = history;
+    msg.signedBy = signedBy;
+    msg.signatures = signatures;
+    return msg;
+}
