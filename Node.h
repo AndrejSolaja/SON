@@ -6,11 +6,16 @@
 #include <map>
 #include <string>
 #include <set>
+#include <memory>
+#include <atomic>
+
+#include "spdlog/spdlog.h"
+
 
 class Node
 {
 public:
-	Node(int numFaultyNodes, bool isLoyal = true) : id(++nextId), numFaultyNodes(numFaultyNodes), isLoyal(isLoyal) {};
+	Node(int numFaultyNodes, bool isLoyal = true);
 
 	void broadcastMsg(Message msg);
 	void recieveMsg(Message msg);
@@ -26,6 +31,9 @@ public:
 	void setIsGeneral(bool val) { isGeneral = val; }
 	std::set<std::string> getRecievedValues() const { return recievedValues; }
 
+	// Logger access
+	std::shared_ptr<spdlog::logger> getLogger() { return nodeLogger; }
+
 private:
 	static int nextId;
 	const int id;
@@ -37,7 +45,8 @@ private:
 	std::vector<Node*> otherNodes;
 	std::set<std::string> recievedValues;
 
-	
-	
+	std::shared_ptr<spdlog::logger> nodeLogger;
 };
+
+extern std::atomic<bool> g_slowMode;
 
