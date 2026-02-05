@@ -1,15 +1,19 @@
-#include "Node.h"
-#include <iostream>
 #include "Consts.h"
-#include <random>
-#include <thread>
-#include <chrono>
-#include <atomic>
+#include "Node.h"
+
 // spdlog
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+
+#include <iostream>
+#include <random>
+#include <thread>
+#include <chrono>
+#include <atomic>
 #include <memory>
+
+
 
 // Static var
 int Node::nextId = 0;
